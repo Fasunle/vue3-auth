@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "fullName": "Fasunle Kehinde Hussein",
+    "userName": "Kehinde",
+    "password": "Pass@123"
+  },
+  {
+    "id": 2,
+    "fullName": "Fasunle Kehinde Hussein",
+    "userName": "kehinde",
+    "password": "Pass@123"
+  }
+]
