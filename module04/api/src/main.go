@@ -66,7 +66,11 @@ func main() {
 	fmt.Printf("Blog server running at %s\n", hostAddress)
 
 	loadUsers()
-	loadPosts()
+	var err = loadPosts()
+
+	if err != nil {
+		log.Fatalln("Mad Error: ", err)
+	}
 
 	log.Fatal(http.ListenAndServe(hostAddress, corsMiddleware(rtr)))
 }

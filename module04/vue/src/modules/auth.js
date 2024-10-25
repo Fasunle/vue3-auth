@@ -73,4 +73,4 @@ const register = (fullName, userName, password) => {
 	});
 };
 
-export default {login, logout, register, refresh};
+export default {login, logout, register, refresh, getToken};

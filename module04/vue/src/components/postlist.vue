@@ -5,19 +5,11 @@
         <v-table>
           <thead>
             <tr>
-              <th class="text-left" width="5%">
-                ID
-              </th>
-              <th class="text-left">
-                Title
-              </th>
-              <th class="text-left" width="20%">
-                Author
-              </th>
-              <th class="text-right" width="5%">
-              </th>
-              <th class="text-right" width="5%">
-              </th>
+              <th class="text-left" width="5%">ID</th>
+              <th class="text-left">Title</th>
+              <th class="text-left" width="20%">Author</th>
+              <th class="text-right" width="5%"></th>
+              <th class="text-right" width="5%"></th>
             </tr>
           </thead>
           <tbody>
@@ -32,12 +24,14 @@
                 {{ post.author }}
               </td>
               <td class="text-right">
-                <v-btn variant="outlined" @click="viewPost(post)">
-                  View
-                </v-btn>
+                <v-btn variant="outlined" @click="viewPost(post)"> View </v-btn>
               </td>
               <td class="text-right">
-                <v-btn variant="outlined" @click="editPost(post)">
+                <v-btn
+                  variant="outlined"
+                  v-if="isLoggedIn"
+                  @click="editPost(post)"
+                >
                   Edit
                 </v-btn>
               </td>
@@ -46,7 +40,7 @@
         </v-table>
       </v-card-text>
       <v-card-actions>
-        <v-btn variant="outlined" @click="createPost()">
+        <v-btn variant="outlined" v-if="isLoggedIn" @click="createPost()">
           Create
         </v-btn>
       </v-card-actions>
@@ -55,40 +49,44 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import _ from 'lodash';
+import { ref, reactive, computed } from "vue";
+import { useRouter } from "vue-router";
+import _ from "lodash";
 
-import { usePostsStore } from "@/stores/posts"
+import { usePostsStore } from "@/stores/posts";
+import { useSessionStore } from "@/stores/session";
 
-const router = useRouter()
+const router = useRouter();
 
-const postsStore = usePostsStore()
+const postsStore = usePostsStore();
+const sessionStore = useSessionStore();
+
+const isLoggedIn = computed(sessionStore.getLoggedIn);
 
 const computedPosts = computed(() => {
   let posts = postsStore.posts;
 
   posts = _.orderBy(posts, ["id", "timestamp"]);
 
-  return posts
-})
+  return posts;
+});
 
 const viewPost = (post) => {
-  console.log(post.id)
-  router.push({ name: "view", params: { id: post.id } })
-}
+  console.log(post.id);
+  router.push({ name: "view", params: { id: post.id } });
+};
 
 const editPost = (post) => {
-  router.push({ name: "edit", params: { id: post.id } })
-}
+  router.push({ name: "edit", params: { id: post.id } });
+};
 
 const createPost = () => {
-  router.push({ name: "create" })
-}
+  router.push({ name: "create" });
+};
 
 const refreshData = () => {
   postsStore.getPosts();
-}
+};
 
-refreshData()
+refreshData();
 </script>
